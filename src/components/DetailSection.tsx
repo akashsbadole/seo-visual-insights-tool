@@ -40,6 +40,68 @@ const DetailSection = ({ title, score, issues, demoMode = false }: DetailSection
   const warningCount = issues.filter(issue => issue.type === "warning").length;
   const errorCount = issues.filter(issue => issue.type === "error").length;
 
+  // Return education content based on section title
+  const renderEducationalContent = () => {
+    switch (title) {
+      case "On-Page SEO":
+        return (
+          <div className="bg-blue-50 p-4 mb-4 rounded border border-blue-200">
+            <h4 className="font-medium text-blue-800 mb-2">About On-Page SEO</h4>
+            <p className="text-sm text-blue-800 mb-2">
+              On-Page SEO refers to all measures taken directly within your website to improve its position in search rankings.
+              Key elements include:
+            </p>
+            <ul className="list-disc pl-5 text-sm text-blue-800 space-y-1">
+              <li><strong>Meta Tags:</strong> Title tags and meta descriptions that accurately describe page content</li>
+              <li><strong>Headings:</strong> Proper H1-H6 tag hierarchy that includes key search terms</li>
+              <li><strong>Content Quality:</strong> Original, relevant content that answers user queries</li>
+              <li><strong>URL Structure:</strong> Clean, descriptive URLs containing relevant keywords</li>
+              <li><strong>Internal Linking:</strong> Strategic links between related pages on your site</li>
+              <li><strong>Image Optimization:</strong> Descriptive filenames and alt text for all images</li>
+            </ul>
+          </div>
+        );
+      case "Technical SEO":
+        return (
+          <div className="bg-blue-50 p-4 mb-4 rounded border border-blue-200">
+            <h4 className="font-medium text-blue-800 mb-2">About Technical SEO</h4>
+            <p className="text-sm text-blue-800 mb-2">
+              Technical SEO focuses on improving the technical aspects of a website to increase the ranking of its pages in search engines.
+              Important technical factors include:
+            </p>
+            <ul className="list-disc pl-5 text-sm text-blue-800 space-y-1">
+              <li><strong>Site Speed:</strong> Fast-loading pages improve user experience and rankings</li>
+              <li><strong>Mobile Compatibility:</strong> Mobile-friendly design is essential for rankings</li>
+              <li><strong>Indexability:</strong> Ensuring search engines can properly crawl and index your site</li>
+              <li><strong>Site Structure:</strong> Logical site architecture that helps both users and crawlers</li>
+              <li><strong>Schema Markup:</strong> Structured data that helps search engines understand content</li>
+              <li><strong>XML Sitemaps:</strong> Maps that guide search engines through your site</li>
+              <li><strong>Security:</strong> HTTPS implementation and other security measures</li>
+            </ul>
+          </div>
+        );
+      case "Content Quality":
+        return (
+          <div className="bg-blue-50 p-4 mb-4 rounded border border-blue-200">
+            <h4 className="font-medium text-blue-800 mb-2">About Content Quality</h4>
+            <p className="text-sm text-blue-800 mb-2">
+              Content quality is a critical ranking factor for search engines. High-quality content:
+            </p>
+            <ul className="list-disc pl-5 text-sm text-blue-800 space-y-1">
+              <li><strong>Relevance:</strong> Addresses the user's search intent and provides valuable information</li>
+              <li><strong>Depth:</strong> Covers topics thoroughly with appropriate word count</li>
+              <li><strong>Readability:</strong> Well-structured with clear headings, short paragraphs, and simple language</li>
+              <li><strong>Originality:</strong> Unique content that isn't duplicated elsewhere</li>
+              <li><strong>Engagement:</strong> Content that keeps users on page and encourages interaction</li>
+              <li><strong>Freshness:</strong> Regularly updated to remain current and accurate</li>
+            </ul>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <Accordion type="single" collapsible className="w-full" defaultValue={title}>
       <AccordionItem value={title}>
@@ -74,6 +136,8 @@ const DetailSection = ({ title, score, issues, demoMode = false }: DetailSection
               <span>{errorCount} Errors</span>
             </div>
           </div>
+          
+          {renderEducationalContent()}
           
           {demoMode && (
             <div className="bg-blue-50 p-4 mb-4 rounded border border-blue-200">
