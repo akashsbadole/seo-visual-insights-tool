@@ -15,7 +15,7 @@ interface AuditResultsProps {
 const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
   const [isExporting, setIsExporting] = useState(false);
 
-  // More realistic demo data for the audit results
+  // More comprehensive demo data for the audit results
   const overallScore = 68;
   const onPageScore = 75;
   const technicalScore = 62;
@@ -47,6 +47,18 @@ const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
       description: "4 images on your page are missing alt text: hero-banner.jpg, team-photo.jpg, process-diagram.png, and contact-us.jpg.",
       recommendation: "Add descriptive alt text to all images that accurately describes the image content while including relevant keywords when appropriate."
     },
+    {
+      type: "warning",
+      title: "Keyword density in content",
+      description: "Your primary keyword 'digital marketing' appears 15 times in a 1200-word article (1.25% density). Ideal keyword density is between 1-2%.",
+      recommendation: "Maintain your current keyword density but ensure keywords are used naturally within the content flow."
+    },
+    {
+      type: "error",
+      title: "Multiple H1 tags detected",
+      description: "Your page contains 3 H1 tags. Best practice is to have only one H1 tag that clearly describes the page's main topic.",
+      recommendation: "Keep only the main H1 tag and change the others to H2 or H3 tags to maintain proper heading hierarchy."
+    }
   ];
 
   const technicalIssues: Issue[] = [
@@ -80,6 +92,18 @@ const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
       description: "6 JavaScript and 3 CSS files are blocking the rendering of your page, delaying page display by approximately 1.8 seconds.",
       recommendation: "Defer non-critical JavaScript, inline critical CSS, and optimize the delivery of external resources."
     },
+    {
+      type: "warning",
+      title: "Missing structured data",
+      description: "Your page doesn't include any structured data markup. Adding schema markup can enhance how your page appears in search results.",
+      recommendation: "Implement relevant schema.org markup such as Article, Product, or Organization depending on your content type."
+    },
+    {
+      type: "error",
+      title: "404 errors found",
+      description: "3 internal links on your page point to non-existent resources: /old-page, /resources/2023, and /contact-old.",
+      recommendation: "Either restore these pages, redirect them to relevant content, or update the links to point to existing pages."
+    }
   ];
 
   const contentIssues: Issue[] = [
@@ -107,6 +131,18 @@ const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
       description: "36% of your content appears to be similar to existing content on other websites, which may be seen as duplicate content.",
       recommendation: "Create original content and rewrite sections that closely match other websites. Use quotes when necessary and always cite sources."
     },
+    {
+      type: "warning",
+      title: "Outdated content",
+      description: "Several statistics referenced in your content are from 2021. Using outdated information reduces content value and trustworthiness.",
+      recommendation: "Update all statistics to the most recent available data and consider adding a 'Last Updated' date to show content freshness."
+    },
+    {
+      type: "success",
+      title: "Good media usage",
+      description: "Your content includes 6 relevant images and 2 videos that enhance the text and improve user engagement.",
+      recommendation: "Continue using relevant visual content while ensuring all media elements have proper alt text and captions."
+    }
   ];
 
   const handleExport = () => {
