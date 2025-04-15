@@ -8,9 +8,10 @@ interface IssueItemProps {
   type: IssueType;
   title: string;
   description: string;
+  recommendation?: string; // Added a recommendation field for more helpful guidance
 }
 
-const IssueItem = ({ type, title, description }: IssueItemProps) => {
+const IssueItem = ({ type, title, description, recommendation }: IssueItemProps) => {
   const getIcon = () => {
     switch (type) {
       case "success":
@@ -39,6 +40,12 @@ const IssueItem = ({ type, title, description }: IssueItemProps) => {
       <div>
         <h3 className="font-medium text-gray-900">{title}</h3>
         <p className="text-sm text-gray-600 mt-1">{description}</p>
+        {recommendation && (
+          <div className="mt-2 text-sm">
+            <span className="font-medium text-blue-600">Recommendation: </span>
+            <span className="text-gray-700">{recommendation}</span>
+          </div>
+        )}
       </div>
     </div>
   );

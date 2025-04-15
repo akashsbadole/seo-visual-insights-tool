@@ -12,6 +12,7 @@ export interface Issue {
   type: IssueType;
   title: string;
   description: string;
+  recommendation?: string; // Added recommendation field
 }
 
 interface DetailSectionProps {
@@ -49,6 +50,7 @@ const DetailSection = ({ title, score, issues }: DetailSectionProps) => {
                 type={issue.type}
                 title={issue.title}
                 description={issue.description}
+                recommendation={issue.recommendation}
               />
             ))}
           </div>
