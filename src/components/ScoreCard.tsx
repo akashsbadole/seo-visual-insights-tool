@@ -45,8 +45,6 @@ const ScoreCard = ({ title, score, description, className }: ScoreCardProps) => 
       <CardContent>
         <Progress
           value={score}
-          className="h-2 mt-2"
-          // Fix: Replace indicatorClassName with a proper className to style the indicator
           className={cn("h-2 mt-2", getProgressColor(score))}
         />
         <p className="mt-4 text-sm text-muted-foreground">{description}</p>
