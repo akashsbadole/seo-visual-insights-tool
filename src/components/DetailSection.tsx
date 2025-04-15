@@ -19,9 +19,10 @@ interface DetailSectionProps {
   title: string;
   score: number;
   issues: Issue[];
+  demoMode?: boolean;
 }
 
-const DetailSection = ({ title, score, issues }: DetailSectionProps) => {
+const DetailSection = ({ title, score, issues, demoMode = false }: DetailSectionProps) => {
   const getScoreColor = (score: number) => {
     if (score >= 80) return "text-green-500";
     if (score >= 50) return "text-yellow-500";
@@ -73,6 +74,16 @@ const DetailSection = ({ title, score, issues }: DetailSectionProps) => {
               <span>{errorCount} Errors</span>
             </div>
           </div>
+          
+          {demoMode && (
+            <div className="bg-blue-50 p-4 mb-4 rounded border border-blue-200">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> This is a demonstration with example data. For real URL analysis, 
+                a backend service that can crawl and analyze websites would be needed.
+              </p>
+            </div>
+          )}
+          
           <div className="space-y-3">
             {issues.map((issue, index) => (
               <IssueItem

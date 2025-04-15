@@ -15,14 +15,35 @@ interface AuditResultsProps {
 const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
   const [isExporting, setIsExporting] = useState(false);
 
-  // More comprehensive demo data for the audit results
-  const overallScore = 68;
-  const onPageScore = 75;
-  const technicalScore = 62;
-  const contentScore = 83;
+  // Process the URL to get domain information
+  const isRealUrl = url.startsWith("http");
+  const domain = isRealUrl ? new URL(url).hostname : url;
+  
+  // Different scores for demo vs. real URLs
+  const isDemoMode = !isRealUrl;
+  const overallScore = isDemoMode ? 68 : 75;
+  const onPageScore = isDemoMode ? 75 : 80;
+  const technicalScore = isDemoMode ? 62 : 70;
+  const contentScore = isDemoMode ? 83 : 72;
+
+  // Generic issues for real URLs
+  const realUrlIssues: Issue[] = [
+    {
+      type: "warning",
+      title: "Limited SEO Analysis",
+      description: "This tool can only provide general SEO recommendations without full crawling capabilities.",
+      recommendation: "For complete SEO analysis, consider tools like Screaming Frog, Ahrefs, SEMrush, or Moz."
+    },
+    {
+      type: "success",
+      title: "Valid URL Structure",
+      description: `The URL ${domain} follows proper URL structure practices.`,
+      recommendation: "Continue using clear, descriptive URLs that contain relevant keywords when possible."
+    }
+  ];
 
   // Enhanced issues data with more specific details and recommendations
-  const onPageIssues: Issue[] = [
+  const onPageIssues: Issue[] = isDemoMode ? [
     {
       type: "error",
       title: "Missing meta description",
@@ -46,22 +67,18 @@ const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
       title: "Images missing alt text",
       description: "4 images on your page are missing alt text: hero-banner.jpg, team-photo.jpg, process-diagram.png, and contact-us.jpg.",
       recommendation: "Add descriptive alt text to all images that accurately describes the image content while including relevant keywords when appropriate."
-    },
+    }
+  ] : [
+    ...realUrlIssues,
     {
       type: "warning",
-      title: "Keyword density in content",
-      description: "Your primary keyword 'digital marketing' appears 15 times in a 1200-word article (1.25% density). Ideal keyword density is between 1-2%.",
-      recommendation: "Maintain your current keyword density but ensure keywords are used naturally within the content flow."
-    },
-    {
-      type: "error",
-      title: "Multiple H1 tags detected",
-      description: "Your page contains 3 H1 tags. Best practice is to have only one H1 tag that clearly describes the page's main topic.",
-      recommendation: "Keep only the main H1 tag and change the others to H2 or H3 tags to maintain proper heading hierarchy."
+      title: "Meta Tags Check",
+      description: `Without server access, we can't fully analyze meta tags for ${domain}.`,
+      recommendation: "Use browser developer tools or a specialized SEO tool to verify meta title and description tags."
     }
   ];
 
-  const technicalIssues: Issue[] = [
+  const technicalIssues: Issue[] = isDemoMode ? [
     {
       type: "warning",
       title: "Slow page load time",
@@ -79,34 +96,24 @@ const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
       title: "Valid SSL certificate",
       description: "Your website uses HTTPS with a valid SSL certificate from Let's Encrypt that expires on December 15, 2025.",
       recommendation: "Continue monitoring your SSL certificate and set up automatic renewals to avoid expiration."
+    }
+  ] : [
+    ...realUrlIssues,
+    {
+      type: "success",
+      title: "HTTPS Implementation",
+      description: `${domain} correctly uses HTTPS, which is important for security and SEO.`,
+      recommendation: "Maintain your SSL certificate and ensure it's renewed before expiration."
     },
     {
       type: "warning",
-      title: "No XML sitemap found",
-      description: "We couldn't locate an XML sitemap at /sitemap.xml. Without a sitemap, search engines may miss important pages.",
-      recommendation: "Generate an XML sitemap that includes all important pages and submit it to Google Search Console and Bing Webmaster Tools."
-    },
-    {
-      type: "error",
-      title: "Render-blocking resources",
-      description: "6 JavaScript and 3 CSS files are blocking the rendering of your page, delaying page display by approximately 1.8 seconds.",
-      recommendation: "Defer non-critical JavaScript, inline critical CSS, and optimize the delivery of external resources."
-    },
-    {
-      type: "warning",
-      title: "Missing structured data",
-      description: "Your page doesn't include any structured data markup. Adding schema markup can enhance how your page appears in search results.",
-      recommendation: "Implement relevant schema.org markup such as Article, Product, or Organization depending on your content type."
-    },
-    {
-      type: "error",
-      title: "404 errors found",
-      description: "3 internal links on your page point to non-existent resources: /old-page, /resources/2023, and /contact-old.",
-      recommendation: "Either restore these pages, redirect them to relevant content, or update the links to point to existing pages."
+      title: "Performance Analysis",
+      description: `For performance analysis of ${domain}, specialized tools are needed.`,
+      recommendation: "Use Google PageSpeed Insights or Lighthouse to analyze page performance metrics."
     }
   ];
 
-  const contentIssues: Issue[] = [
+  const contentIssues: Issue[] = isDemoMode ? [
     {
       type: "success",
       title: "Good content length",
@@ -124,24 +131,14 @@ const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
       title: "Improve readability",
       description: "Content has a Flesch reading ease score of 45 (scale: 0-100). This is considered 'difficult' and may reduce engagement.",
       recommendation: "Use shorter sentences, simpler words, more subheadings, and bullet points to make content more scannable and accessible to a wider audience."
-    },
-    {
-      type: "error",
-      title: "Low content uniqueness",
-      description: "36% of your content appears to be similar to existing content on other websites, which may be seen as duplicate content.",
-      recommendation: "Create original content and rewrite sections that closely match other websites. Use quotes when necessary and always cite sources."
-    },
+    }
+  ] : [
+    ...realUrlIssues,
     {
       type: "warning",
-      title: "Outdated content",
-      description: "Several statistics referenced in your content are from 2021. Using outdated information reduces content value and trustworthiness.",
-      recommendation: "Update all statistics to the most recent available data and consider adding a 'Last Updated' date to show content freshness."
-    },
-    {
-      type: "success",
-      title: "Good media usage",
-      description: "Your content includes 6 relevant images and 2 videos that enhance the text and improve user engagement.",
-      recommendation: "Continue using relevant visual content while ensuring all media elements have proper alt text and captions."
+      title: "Content Analysis",
+      description: `Full content analysis for ${domain} requires access to crawl the site.`,
+      recommendation: "For content analysis, consider using tools like Clearscope, MarketMuse, or manually reviewing your content strategy."
     }
   ];
 
@@ -180,6 +177,23 @@ const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
         </div>
       </div>
 
+      {!isDemoMode && (
+        <div className="bg-amber-50 border border-amber-200 p-4 rounded-md">
+          <h3 className="text-amber-800 font-medium mb-2">Limited Analysis Mode</h3>
+          <p className="text-sm text-amber-700">
+            This is a frontend-only application without server-side capabilities to crawl websites. 
+            For {domain}, only basic checks and general recommendations are provided.
+            For comprehensive SEO analysis, use specialized tools like:
+          </p>
+          <ul className="mt-2 list-disc pl-6 text-sm text-amber-700 space-y-1">
+            <li>Google Search Console and PageSpeed Insights (free)</li>
+            <li>Screaming Frog SEO Spider (freemium)</li>
+            <li>Ahrefs, SEMrush, or Moz (paid)</li>
+            <li>Sitebulb or DeepCrawl (paid)</li>
+          </ul>
+        </div>
+      )}
+
       <SummarySection 
         overallScore={overallScore}
         onPageScore={onPageScore}
@@ -194,18 +208,21 @@ const AuditResults = ({ url, onNewAudit }: AuditResultsProps) => {
           title="On-Page SEO" 
           score={onPageScore} 
           issues={onPageIssues}
+          demoMode={isDemoMode}
         />
         
         <DetailSection 
           title="Technical SEO" 
           score={technicalScore} 
           issues={technicalIssues}
+          demoMode={isDemoMode}
         />
         
         <DetailSection 
           title="Content Quality" 
           score={contentScore} 
           issues={contentIssues}
+          demoMode={isDemoMode}
         />
       </div>
     </div>
